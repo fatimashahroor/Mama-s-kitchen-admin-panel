@@ -1,0 +1,71 @@
+.page {
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+    height: 100vh;
+    background-color: #F0F2F5;
+    color: #1C1E21;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+.card {
+    background-color: #FFF;
+    height: 40vh;
+    width: 20vw;
+    padding: 50px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.welcome-section {
+    margin-right: 50px; 
+    background: linear-gradient(to right, #B20530, #FFD21C); 
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text; 
+    color: transparent;     
+    font-size: 26px;
+}
+
+.inputField {
+    padding: 10px;
+    border: 1px solid #DDD;
+    border-radius: 5px;
+    font-size: medium;
+    width: 20vw;
+    margin-bottom: 30px;
+    height : 4vh;
+}
+
+p {
+    color: #B20530;
+    font-size: 28px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+.submit {
+    background-color: #B20530;
+    color: #FFF;
+    margin-top: 20px;
+    padding: 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 17vw;
+    font-size: large;
+    margin-left: -10PX;
+}
+
+button:hover {
+    background-color: #FFD21C;
+    color: black
+}
+
+.errorMsg {
+    color: #B20530;
+    margin-top: 5px;
+}
