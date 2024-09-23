@@ -1,6 +1,4 @@
-
 export const authRemote = {
-
     login: async(email, password) => {
       const settings = {
         method: 'POST',
@@ -12,7 +10,7 @@ export const authRemote = {
             "password": password
         })
     };
-    const response = await fetch(`http://192.168.1.4:4000/api/login`, settings);
+    const response = await fetch('http://192.168.1.11:4000/api/login', settings);
     const data = await response.json();
 
     return data;
