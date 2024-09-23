@@ -1,0 +1,17 @@
+.delete {
+    margin-right: 63px;
+    background-color: #B20530;
+    color: #FFF;
+    padding: 5px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 10vw;
+    height: 7vh;
+    font-size: medium;
+}
+
+p {
+    color: #000;
+    font-size: medium;
+}
