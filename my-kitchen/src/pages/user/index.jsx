@@ -3,24 +3,23 @@ import { List, ListItem, Dialog, DialogTitle, DialogContent, DialogActions, Text
 import {authLocal} from '../login/auth-local';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { useNavigate, useLocation } from 'react-router-dom';
+import Navbar from '../../components/NavigationBar';
+import DeleteModal from '../../components/DeleteModal';
 import "./styles.css";
 
 const UsersList = () => {
     const [users, setUsers] = useState([]);
     const [error, setError] = useState(null);
-    const navigate = useNavigate();
-    const location = useLocation(); 
     const [editData, setEditData] = useState({ id: null, phone: '', bio: '', age: '', status: '', located_in: '' });
     const [modalData, setModalData] = useState({ id: null, full_name: '', email: '', password: '', roles: '' });
-    const {REACT_APP_URL} = process.env;
     const [modalOpen, setModalOpen] = useState(false);
     const [modalAddOpen, setModalAddOpen] = useState(false);
+    const [ShowDeleteModal, setShowDeleteModal] = useState(null);
     const fetchUsers = async () => {
         setError(null);
         try {
             const token = authLocal.getToken();
-            const response = await fetch(`${REACT_APP_URL}/api/user`, {
+            const response = await fetch('http://192.168.1.11:4000/api/user', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -44,7 +43,7 @@ const UsersList = () => {
         setError(null);
         try {
             const token = authLocal.getToken();
-            const response = await fetch(`${REACT_APP_URL}/api/user/delete/${userId}`, {
+            const response = await fetch(`http://192.168.1.11:4000/api/user/delete/${userId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -83,7 +82,7 @@ const UsersList = () => {
         console.log(roles);
         try {
             const token = authLocal.getToken();
-            const response = await fetch(`${REACT_APP_URL}/api/user/create`, {
+            const response = await fetch(`http://192.168.1.11:4000/api/user/create`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -97,7 +96,6 @@ const UsersList = () => {
                 }),
             });
             const data = await response.json();
-            console.log(data);
             if (response.ok) {
                 fetchUsers();
             } else {
@@ -112,7 +110,7 @@ const UsersList = () => {
     const updateUser =  async (userId) => {
         try {
             const token = authLocal.getToken();
-            const response = await fetch(`${REACT_APP_URL}/api/user/update/${userId}`, {
+            const response = await fetch(`http://192.168.1.11:4000/api/user/update/${userId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -146,28 +144,17 @@ const UsersList = () => {
 
     return (
         <div className='container'>
-             <h3>Mama's Kitchen</h3>
-             <nav className='nav-bar'>
-                <ul>
-                    <li
-                        className={location.pathname === '/users' ? 'active-link' : ''}
-                        onClick={() => navigate('/users')}> Manage Users
-                    </li>
-                    <li
-                        className={location.pathname === '/roles' ? 'active-link' : ''}
-                        onClick={() => navigate('/roles')}> 
-                        Manage Roles
-                    </li>
-                </ul>
-            </nav>
-            <h2>Users</h2>
+            <Navbar/>
+            <div className='title'>
+                <h2>Users</h2>
+                <button className='addUser' onClick={handleCreateClick}> Add User</button>
+            </div>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <List style={{ width: '80%', padding: 50, margin: '0 auto', marginTop: -40, marginLeft: -10 }}>
         <ListItem style={{ display: 'flex', justifyContent: 'center', flexDirection: 'row', alignItems: 'center' }}>
           <div className='header' style={{ flex: 3, fontWeight: 'bold', textAlign: 'left' }}>Name</div>
-          <div className='header' style={{ flex: 1, fontWeight: 'bold', textAlign: 'left', marginRight: 340, marginLeft: -20}}>Email</div>
-          <div className='header' style={{ flex: 5, fontWeight: 'bold', textAlign: 'left', marginLeft: -80 }}>Role</div>
-          
+          <div className='header' style={{ flex: 0.2, fontWeight: 'bold', textAlign: 'left', marginRight: 340, marginLeft: -20}}>Email</div>
+          <div className='header' style={{ flex: 5.1, fontWeight: 'bold', textAlign: 'left', marginLeft: -80 }}>Role</div>
         </ListItem>
         {users.map(user => (
           <ListItem key={user.id} style={{ display: 'flex', justifyContent: 'center', flexDirection: 'row', alignItems: 'center' }}>
@@ -175,15 +162,19 @@ const UsersList = () => {
             <div style={{ flex: 3, fontSize: 19, textAlign: 'left', marginRight: 50 }}>{user.user.email}</div>
             <div style={{ flex: 1, fontSize: 19, textAlign: 'left' }}>{user.role}</div>
             <div style={{ flex: 4.2, textAlign: 'right' }}>
-              <div aria-label="edit" style={{ marginRight: 200 }} onClick={() => handleEditClick(user.user)}>
-                <EditIcon />
-              </div>
+            <div aria-label="edit" style={{ marginRight: 200 }} onClick={() => handleEditClick(user.user)}>
+            <EditIcon style={{ cursor: 'pointer'}}/>
             </div>
-            <div>
-              <div onClick={() => {handleDelete(user.user.id)}} aria-label="delete">
-                <DeleteIcon />
-              </div>
             </div>
+            <div onClick={() => setShowDeleteModal(user.user.id)} aria-label="delete">
+                <DeleteIcon style={{ cursor: 'pointer'}}/>
+            </div>
+            <DeleteModal
+                deleteFunction={() => handleDelete(user.user.id)}
+                objectName="user"
+                showModal={ShowDeleteModal === user.user.id}
+                onClose={() => setShowDeleteModal(null)}
+            />
           </ListItem>
         ))}
          <Dialog open={modalOpen} onClose={handleClose}>
@@ -282,7 +273,6 @@ const UsersList = () => {
                 </DialogActions>
             </Dialog>
       </List>
-      <button className='addUser' onClick={handleCreateClick}> Add User</button>
       <Dialog open={modalAddOpen} onClose={handleClose}>
                 <DialogTitle>Add User</DialogTitle>
                 <DialogContent>
