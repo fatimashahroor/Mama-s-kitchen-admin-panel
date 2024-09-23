@@ -11,7 +11,6 @@ const Login = () => {
 
   const loginHandler = async () => {
     const data = await authRemote.login(email, password);
-    console.log(data);
     if (data.user.roles[0] === 1) {
       authLocal.saveToken(data.access_token);
       navigate("/users");
@@ -21,6 +20,7 @@ const Login = () => {
   };
   return (
     <div className="page">
+      <img src= "/Fatima_Shahroor_logo.png" alt= "Fatima_Shahroor_logo"/>
       <div className="welcome-section">
         <h1>Welcome to <br></br>Mama's Kitchen</h1>
       </div>
