@@ -1,0 +1,33 @@
+h3 {
+    color: #B20530;
+    font-size: 35px;
+}
+
+.nav-bar {
+    display: flex;
+    margin-top: -90px;
+    margin-left: 800px;
+}
+
+.nav-bar ul {
+    list-style: none;
+    display: flex;
+}
+
+.nav-bar li {
+    cursor: pointer;
+    padding: 10px 20px;
+    font-weight: bold;
+    color: #333;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.nav-bar li:hover {
+    background-color: #f1f1f1;
+}
+
+.active-link {
+    background-color: #ffd21c; 
+    color: #b20530; 
+}
